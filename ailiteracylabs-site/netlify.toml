@@ -1,0 +1,6 @@
+# Redirects all traffic from the root domain to the www subdomain
+[[redirects]]
+  from = "https://ailiteracylabs.com/*"
+  to = "https://www.ailiteracylabs.com/:splat"
+  status = 301
+  force = true
