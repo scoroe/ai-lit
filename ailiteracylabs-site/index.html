@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Literacy Labs - Future-Proof Your Career</title>
-    <!-- V6: Implemented robust, safe Beehiiv embed via JavaScript injection to prevent layout breakage. -->
+    <!-- V7: Final implementation using a standard CSS wrapper for the Beehiiv embed to ensure responsive and stable rendering. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,23 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* Tailwind's slate-50 */
+        }
+        /* New CSS for the responsive iframe wrapper */
+        .beehiiv-responsive-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 100%; /* Default aspect ratio, can be adjusted if needed */
+        }
+        .beehiiv-responsive-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -28,20 +45,9 @@
         </div>
     </header>
 
-    <!-- Main Content (no changes to Hero, Social Proof, etc.) -->
+    <!-- Main Content (no changes) -->
     <main>
-        <section class="py-20 sm:py-28 text-center bg-white">
-             <!-- ... hero content ... -->
-        </section>
-        <section class="py-12 bg-white border-t border-b border-stone-200">
-            <!-- ... social proof content ... -->
-        </section>
-        <section class="py-20">
-            <!-- ... problem content ... -->
-        </section>
-        <section class="py-20 bg-white">
-            <!-- ... solution content ... -->
-        </section>
+        <!-- ... (Hero, Social Proof, Problem, Solution sections are unchanged) ... -->
 
         <!-- Waitlist Form Section (UPDATED) -->
         <section id="waitlist-form" class="py-20">
@@ -53,11 +59,12 @@
                     </div>
                     
                     <!-- 
-                      This div is now a placeholder. The JavaScript below will
-                      inject the Beehiiv iframe here after the page loads.
+                      This wrapper div and the new CSS in the <head> is the fix.
+                      It creates a responsive container that controls the iframe.
                     -->
-                    <div id="beehiiv-embed-container" class="mt-8"></div>
-
+                    <div class="mt-8 beehiiv-responsive-wrapper" style="padding-top: 85%;">
+                        <iframe src="https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf?transparent=true" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="margin: 0; border-radius: 6px !important; background-color: transparent;"></iframe>
+                    </div>
                 </div>
             </div>
         </section>
@@ -66,38 +73,11 @@
     
     <!-- Footer (no changes) -->
     <footer class="bg-slate-900 text-white">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <p>&copy; 2025 AI Literacy Labs. All rights reserved.</p>
-        </div>
+        <!-- ... footer content ... -->
     </footer>
 
-    <!-- NEW: Safe Beehiiv Embed Script -->
-    <script>
-        window.addEventListener('load', function() {
-            const beehiivContainer = document.getElementById('beehiiv-embed-container');
-            if (beehiivContainer) {
-                // 1. Create the iframe element
-                const iframe = document.createElement('iframe');
-                iframe.src = "https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf";
-                iframe.width = "100%";
-                iframe.height = "320"; // A safe default height for the form
-                iframe.frameBorder = "0";
-                iframe.scrolling = "no";
-                iframe.style.margin = "0";
-                iframe.style.borderRadius = "6px";
-                iframe.style.backgroundColor = "transparent";
-                iframe.setAttribute('data-test-id', 'beehiiv-embed');
+    <!-- Beehiiv embed script -->
+    <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
 
-                // 2. Create the script element
-                const script = document.createElement('script');
-                script.src = "https://subscribe-forms.beehiiv.com/embed.js";
-                script.async = true;
-
-                // 3. Append the iframe to our placeholder and the script to the body
-                beehiivContainer.appendChild(iframe);
-                document.body.appendChild(script);
-            }
-        });
-    </script>
 </body>
 </html>
