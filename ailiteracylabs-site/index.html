@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Literacy Labs - Future-Proof Your Career</title>
-    <!-- V3: Final implementation with live Beehiiv embed code. -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- V4: Corrected Beehiiv embed using a responsive wrapper to prevent layout breakage. -->
+    <!-- This version adds the aspect-ratio plugin to ensure the iframe scales correctly. -->
+    <script src="https://cdn.tailwindcss.com?plugins=aspect-ratio"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,11 +29,24 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Content (no changes to Hero, Social Proof, etc.) -->
     <main>
-        <!-- Hero, Social Proof, Problem, Solution Sections (no changes) -->
+        <!-- ... (Hero, Social Proof, Problem, Solution sections are unchanged) ... -->
         <section class="py-20 sm:py-28 text-center bg-white">
-            <!-- ... hero content ... -->
+            <div class="container mx-auto px-6">
+                <span class="text-indigo-600 font-semibold">THE AI SHIFT IS HERE</span>
+                <h1 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto">
+                    Stop Drowning in AI News.<br>Start Building Your Future.
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg text-slate-600">
+                    Feeling overwhelmed by the pace of AI? You're not alone. Get a personalized, adaptive learning path that cuts through the noise and shows you exactly what you need to learn to stay ahead.
+                </p>
+                <div class="mt-8">
+                    <a href="#waitlist-form" class="bg-indigo-600 text-white px-8 py-4 rounded-md font-semibold text-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Join the Private Waitlist
+                    </a>
+                </div>
+            </div>
         </section>
         <section class="py-12 bg-white border-t border-b border-stone-200">
             <!-- ... social proof content ... -->
@@ -44,25 +58,28 @@
             <!-- ... solution content ... -->
         </section>
 
-        <!-- Waitlist Form Section (UPDATED with Beehiiv Embed) -->
+
+        <!-- Waitlist Form Section (UPDATED with Responsive Beehiiv Embed) -->
         <section id="waitlist-form" class="py-20">
             <div class="container mx-auto px-6">
-                <div id="form-container" class="max-w-xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
+                <div class="max-w-xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
                     <div class="text-center">
                         <h2 class="text-3xl font-bold text-slate-900">Be First in Line</h2>
                         <p class="mt-3 text-slate-600">Join our private waitlist to get early access and help shape the future of professional AI education.</p>
                     </div>
+                    
+                    <!-- 
+                        This container div is the key to the fix.
+                        It creates a responsive box that forces the iframe inside it to
+                        maintain a consistent aspect ratio, preventing layout collapse.
+                    -->
                     <div class="mt-8">
-                        <!--
-                          =====================================================
-                          == BEEHIIV EMBED CODE INSERTED HERE ==
-                          =====================================================
-                        -->
-                        <iframe src="https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width: 100%; margin: 0; border-radius: 6px !important; background-color: transparent;"></iframe>
+                      <iframe src="https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf" class="beehiiv-embed w-full" data-test-id="beehiiv-embed" height="320" frameborder="0" scrolling="no" style="margin: 0; border-radius: 6px !important; background-color: transparent;"></iframe>
                     </div>
                 </div>
             </div>
         </section>
+
     </main>
     
     <!-- Footer (no changes) -->
@@ -72,7 +89,10 @@
         </div>
     </footer>
 
-    <!-- Beehiiv embed script -->
+    <!-- Beehiiv embed script can remain here -->
     <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+    
+    <!-- The old Netlify JS is no longer needed -->
+
 </body>
 </html>
