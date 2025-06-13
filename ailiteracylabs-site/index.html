@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Literacy Labs - Future-Proof Your Career</title>
-    <!-- V9: Final attempt. Removed all wrappers. Moved Beehiiv script to the end of the body to fix the load-order race condition. -->
+    <!-- V10: Implemented robust JS loader with verbose debugging via console.log -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,13 +34,12 @@
                         <p class="mt-3 text-slate-600">Join our private waitlist to get early access and help shape the future of professional AI education.</p>
                     </div>
                     
-                    <!-- The iframe is placed directly in a simple container -->
-                    <div class="mt-8 w-full">
-                        <iframe src="https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf?transparent=true" data-test-id="beehiiv-embed" height="320" frameborder="0" scrolling="no" style="width: 100% !important; margin: 0; border-radius: 6px !important; background-color: transparent;"></iframe>
-                    </div>
+                    <!-- This div is the placeholder for our form -->
+                    <div id="beehiiv-embed-container" class="mt-8"></div>
                 </div>
             </div>
         </section>
+
     </main>
     
     <!-- Footer (no changes) -->
@@ -48,12 +47,48 @@
         <!-- ... footer content ... -->
     </footer>
 
-    <!-- 
-      THE FIX: The Beehiiv script is now here, at the end of the body.
-      This ensures the entire page, including the iframe, is loaded before this script runs.
-      The 'async' attribute has been removed to prevent it from running out of order.
-    -->
-    <script src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+    <!-- NEW: Safe & Verbose Beehiiv Embed Script -->
+    <script>
+        // We will wait for the entire HTML document to be loaded and parsed.
+        // This is a more robust event than 'window.onload'.
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[DEBUG] Step 1: DOM content fully loaded. Initializing Beehiiv embed.');
 
+            const beehiivContainer = document.getElementById('beehiiv-embed-container');
+            
+            if (beehiivContainer) {
+                console.log('[DEBUG] Step 2: Found the placeholder container div.');
+
+                // 1. Create the iframe element
+                const iframe = document.createElement('iframe');
+                iframe.src = "https://subscribe-forms.beehiiv.com/8e0c82f0-6bc1-44da-b8fd-4c4be8134acf?transparent=true";
+                iframe.width = "100%";
+                iframe.height = "320";
+                iframe.frameBorder = "0";
+                iframe.scrolling = "no";
+                iframe.style.margin = "0";
+                iframe.style.borderRadius = "6px";
+                iframe.style.backgroundColor = "transparent";
+                iframe.setAttribute('data-test-id', 'beehiiv-embed');
+                console.log('[DEBUG] Step 3: Created the iframe element in memory.');
+
+                // 2. Create the script element
+                const script = document.createElement('script');
+                script.src = "https://subscribe-forms.beehiiv.com/embed.js";
+                script.async = true;
+                console.log('[DEBUG] Step 4: Created the script element in memory.');
+                
+                // 3. Append the iframe to our placeholder and the script to the body
+                beehiivContainer.appendChild(iframe);
+                console.log('[DEBUG] Step 5: Appended the iframe to the page.');
+
+                document.body.appendChild(script);
+                console.log('[DEBUG] Step 6: Appended the Beehiiv embed.js script to the page. The script will now fetch and execute.');
+
+            } else {
+                console.error('[DEBUG] FATAL ERROR: Could not find the placeholder div with ID "beehiiv-embed-container".');
+            }
+        });
+    </script>
 </body>
 </html>
