@@ -4,17 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Literacy Labs - Future-Proof Your Career</title>
-    <!-- Chosen Palette: "Warm Neutral Harmony" - Consistent with the interactive prototype. This palette uses warm off-whites and grays, with slate for text and a clear, motivating indigo for the call-to-action elements. The goal is a professional, calm, and trustworthy aesthetic that encourages sign-ups. -->
-    <!-- Application Structure Plan: A classic, high-conversion landing page structure. The flow is designed to take a user from problem awareness to solution desire in a single scroll. 1. Hero: A bold, relatable headline. 2. Social Proof: Immediately builds credibility. 3. Problem: Scannable points that amplify the user's pain. 4. Solution: A clear overview of the value proposition. 5. How It Works: A simple visual to build credibility. 6. Final CTA/Form: The ultimate conversion point. This refined narrative, adding social proof early, is designed to increase trust and sign-up conversions. -->
-    <!-- Visualization & Content Choices:
-        - Report Info: Core Value Proposition (PRD sections 1.3, 1.4). Goal: Inform & Persuade. Viz/Method: Large headline text and a prominent CTA button. Interaction: Button scrolls to the sign-up form. Justification: A direct CTA is essential for conversion.
-        - Report Info: Target Audience Credibility (Implicit from PRD section 2). Goal: Build Trust. Viz/Method: A "Designed for professionals like you" section with placeholder roles. Interaction: None. Justification: Social proof is critical for validation. It signals that this is a serious solution for serious professionals, increasing sign-up intent.
-        - Report Info: Target Audience Pain Points (PRD section 2). Goal: Empathize & Validate. Viz/Method: Icon-and-text blocks in a grid layout. Interaction: None. Justification: Makes user problems feel understood and scannable.
-        - Report Info: The platform's process (PRD section 4.1). Goal: Build Trust. Viz/Method: A simplified 3-step process diagram. Interaction: None. Justification: Visually explaining the "how" demystifies the product.
-        - Report Info: User data collection. Goal: Collect Leads & Insights. Viz/Method: HTML Form. Interaction: Form submission. Justification: Core purpose of the page.
-        -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- We need the Supabase JS client to call our Edge Function -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,8 +38,9 @@
                 <h1 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto">
                     Stop Drowning in AI News.<br>Start Building Your Future.
                 </h1>
+                <!-- MODIFIED SUB-HEADLINE -->
                 <p class="mt-6 max-w-2xl mx-auto text-lg text-slate-600">
-                    Feeling overwhelmed by the pace of AI? You're not alone. Get a personalized, adaptive learning path that cuts through the noise and shows you exactly what you need to learn to stay ahead.
+                    Stop trying to drink from the AI firehose. We analyze the flood of daily content, filter the noise, and distill it into a simple, personalized learning path that shows you exactly what to learn next.
                 </p>
                 <div class="mt-8">
                     <a href="#waitlist-form" class="bg-indigo-600 text-white px-8 py-4 rounded-md font-semibold text-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -143,7 +136,8 @@
                         <h2 class="text-3xl font-bold text-slate-900">Be First in Line</h2>
                         <p class="mt-3 text-slate-600">Join our private waitlist to get early access and help shape the future of professional AI education.</p>
                     </div>
-                    <form id="signup-form" class="mt-8 space-y-6" data-netlify="true">
+                    
+                    <form id="signup-form" class="mt-8 space-y-6">
                         <div>
                             <label for="email" class="sr-only">Email address</label>
                             <input id="email" name="email" type="email" autocomplete="email" required class="w-full px-4 py-3 rounded-md border-2 border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 text-lg" placeholder="your.email@company.com">
@@ -152,7 +146,7 @@
                             <label for="challenge" class="block text-sm font-medium text-slate-700">What's your biggest challenge learning AI today? (Optional)</label>
                             <textarea id="challenge" name="challenge" rows="3" class="mt-1 w-full px-4 py-3 rounded-md border-2 border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., Finding resources relevant to my role, understanding technical concepts..."></textarea>
                         </div>
-                        <!-- GDPR Consent Checkbox -->
+                        
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <input id="consent" name="consent" type="checkbox" required class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
@@ -162,14 +156,15 @@
                             </div>
                         </div>
                         <div>
-                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <button id="submit-button" type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400">
                                 Secure My Spot
                             </button>
                         </div>
                     </form>
+                    
+                    <div id="form-error" class="hidden mt-4 text-center text-red-600 font-medium"></div>
                 </div>
                 
-                <!-- Enhanced Thank You Experience -->
                 <div id="success-message" class="hidden max-w-xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl text-center">
                     <div class="text-6xl">🎉</div>
                     <h2 class="mt-4 text-3xl font-bold text-slate-900">Welcome to the Front Line!</h2>
@@ -200,35 +195,86 @@
 
     </main>
     
-    <!-- Footer -->
     <footer class="bg-slate-900 text-white">
         <div class="container mx-auto px-6 py-8 text-center">
             <p>&copy; 2025 AI Literacy Labs. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- MODIFIED SCRIPT -->
     <script>
+        // --- Configuration ---
+        const SUPABASE_URL = 'https://hiahhtbhdfjsdsjnxofp.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpYWhodGJoZGZqc2Rzam54b2ZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0NjI4ODAsImV4cCI6MjA2NTAzODg4MH0.K-WFZUXY5aJDXaAXzsuF1v-HsIs-1YbBWBDITRKRdrE';
+
+        // --- DOM Elements ---
         const form = document.getElementById('signup-form');
         const formContainer = document.getElementById('form-container');
         const successMessage = document.getElementById('success-message');
+        const submitButton = document.getElementById('submit-button');
+        const emailInput = document.getElementById('email');
+        const challengeInput = document.getElementById('challenge'); // Get the challenge textarea
+        const formError = document.getElementById('form-error');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
+        // --- Initialize Supabase Client ---
+        let dbClient;
+        try {
+            dbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        } catch (e) {
+            console.error("Error initializing Supabase client:", e);
+            alert("A configuration error occurred. Could not connect to the server.");
+        }
+        
+        // --- Form Submission Handler ---
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault(); 
+            
+            if (!dbClient) {
+                formError.textContent = "Error: Could not connect to the subscription service.";
+                formError.classList.remove('hidden');
+                return;
+            }
 
-            const myForm = event.target;
-            const formData = new FormData(myForm);
+            const email = emailInput.value;
+            const challenge = challengeInput.value; // Get the value from the challenge textarea
 
-            fetch("/", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(formData).toString(),
-            })
-            .then(() => {
-                console.log("Form successfully submitted");
+            if (!email) {
+                formError.textContent = "Please enter a valid email address.";
+                formError.classList.remove('hidden');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            formError.classList.add('hidden');
+
+            try {
+                // Construct the payload, including the challenge if it exists
+                const payload = { 
+                    email: email,
+                    challenge: challenge 
+                };
+
+                // Invoke the 'add-to-waitlist' Edge Function
+                const { error } = await dbClient.functions.invoke('add-to-waitlist', {
+                    body: payload,
+                });
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+                
                 formContainer.classList.add('hidden');
                 successMessage.classList.remove('hidden');
-            })
-            .catch((error) => alert(error));
+
+            } catch (error) {
+                console.error("Submission Error:", error);
+                formError.textContent = `Submission failed. The user may already be subscribed.`;
+                formError.classList.remove('hidden');
+
+                submitButton.disabled = false;
+                submitButton.textContent = 'Secure My Spot';
+            }
         });
     </script>
 </body>
